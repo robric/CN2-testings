@@ -8,7 +8,7 @@ This will make Contrail being as easy to consume as any application. Install it,
 
 For example, the definition of a BGP peer toward  - For networkers, check out the rich afi/safi support (address-family) and figure out how  connectivity becomes simple thanks to a nativeintegration in the MP-BGP contol plane.
 
-'''
+```
 cat mx.yaml
 apiVersion: core.contrail.juniper.net/v1alpha1
 kind: BGPRouter
@@ -51,7 +51,7 @@ spec:
     kind: RoutingInstance
     name: default
     namespace: default-project
-'''
+```
 
 And there is much more to come, but ush ush :-)
 
