@@ -6,7 +6,7 @@ These days, we're taking Contrail and making it truly kubernetees-native.
 This is a major change in our configuration plane, as contrail logic is being migrated to the kube API thanks to custom ressources.
 This will make Contrail being as easy to consume as any application. Install it, take your manifest to buid your networking logic and here you go: you get advanced container routing with advanced networking functionalities.
 
-For example, the definition of a BGP peer toward  - For networkers, check out the rich afi/safi support (address-family) and figure out how  connectivity becomes simple thanks to a nativeintegration in the MP-BGP contol plane.
+For example, check out below the definition of a BGP peering toward a physical router (MX). Networkers will notice the rich afi/safi support (address-family) and figure out how connectivity and integration becomes simple MP-BGP control plane.
 
 ```
 cat mx.yaml
@@ -62,4 +62,3 @@ Hence I am pretty exciting to test the kubernetees-native routing platform. Righ
 Let's first start to install microk8s.
 
 I just downloaded the microk8S installer from https://microk8s.io/
-
