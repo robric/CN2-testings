@@ -53,16 +53,12 @@ spec:
     namespace: default-project
 ```
 
-And there is much more to come, but ush ush :-)
-
-Hence I am pretty exciting to test the kubernetees-native routing platform. Right now builds are Juniper-internal, but stay tuned :-).
-
+Hence I am pretty exciting to test the kubernetees-native routing platform. Right now builds are Juniper-internal, but stay tuned -and there's much more to come-.
 ## Installation procedure
 
-You must first [install microk8s.
+### Minikube install on windows
 
-](https://kubernetes.io/fr/docs/tasks/tools/install-minikube/)
+You must first [install minikube on your laptop](<https://minikube.sigs.k8s.io/docs/start/>). Here, I actually used the [windows installer](https://github.com/kubernetes/minikube/releases/download/v1.17.0/minikube-installer.exe)
+![Screenshot](pictures/minikube-install.JPG)
+That was rather straightforward.
 
-I just downloaded the microk8S installer from https://microk8s.io/
-
-That's pretty straightforward
