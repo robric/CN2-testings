@@ -58,7 +58,96 @@ Hence I am pretty exciting to test the kubernetees-native routing platform. Righ
 
 ### Minikube install on windows
 
-You must first [install minikube on your laptop](<https://minikube.sigs.k8s.io/docs/start/>). Here, I actually used the [windows installer](https://github.com/kubernetes/minikube/releases/download/v1.17.0/minikube-installer.exe)
+ First [install minikube](<https://minikube.sigs.k8s.io/docs/start/>). Here, I actually used the [windows installer](https://github.com/kubernetes/minikube/releases/download/v1.17.0/minikube-installer.exe)
 ![Screenshot](pictures/minikube-install.JPG)
-That was rather straightforward.
+That was rather straightforward (next, agree, etc.).
+
+### Hyper-V installation
+
+We will use windows Hyper-V.
+You can check the status of Hyper-V install by entering the systeminfo command in a powershell window.
+
+```
+PS C:\Users\rroberts> systeminfo
+
+Host Name:                 RROBERTS-P50
+OS Name:                   Microsoft Windows 10 Enterprise
+OS Version:                10.0.18363 N/A Build 18363
+[...]
+                                 [02]: fe80::15fd:982d:57ac:da9a
+Hyper-V Requirements:      A hypervisor has been detected. Features required for Hyper-V will not be displayed.
+PS C:\Users\rroberts>
+```
+
+The last line is what expect (here Hyper-V was previously installed). If Hyper-V is not installed, just follow the steps listed on the [Microsoft Website](https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/quick-start/enable-hyper-v)
+
+Then run the following commands via powershell **in administrator mode**: 
+
+```
+PS C:\WINDOWS\system32> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+
+
+Path          :
+Online        : True
+RestartNeeded : False
+
+
+
+PS C:\WINDOWS\system32> DISM /Online /Enable-Feature /All /FeatureName:Microsoft-Hyper-V
+
+Deployment Image Servicing and Management tool
+Version: 10.0.18362.1316
+
+Image Version: 10.0.18363.1316
+
+Enabling feature(s)
+[==========================100.0%==========================]
+The operation completed successfully.
+PS C:\WINDOWS\system32> 
+
+```
+
+### Configure a VSWITCH
+
+Minikube requires a virtual switch to run properly. If you did not configure any, you'll get an error message similar to the capture below.
+
+![Screenshot](pictures/ip_error.JPG)
+
+So let's define a virtual switch called minikube.
+Type the following command in a powershell window (**Administrator mode mandatory**).
+
+```
+New-VMSwitch -name minikube -NetAdapterName Ethernet -AllowManagementOS $true
+
+PS C:\minikube> New-VMSwitch -name minikube -SwitchType internal
+
+Name     SwitchType NetAdapterInterfaceDescription
+----     ---------- ------------------------------
+minikube Internal
+
+
+PS C:\minikube>
+```
+Then get the CN2 deployment manifest (we use a specific directory called minikube as administrator default to the system32 folder).
+```
+PS C:\WINDOWS\system32> cd C:\
+PS C:\> mkdir minikube
+
+
+    Directory: C:\
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        1/27/2021   2:40 PM                minikube
+
+
+PS C:\> cd minikube
+PS C:\minikube> curl -o cn2-deployer.yaml https://raw.githubusercontent.com/robric/CN2-testings/main/manifests/cn2-deployer.yaml
+```
+
+Then you 
+```
+minikube start --container-runtime cri-o --memory 5g --cni cn2-deployer.yaml  --vm-driver hyperv --hyperv-virtual-switch "minikube"
+```
 

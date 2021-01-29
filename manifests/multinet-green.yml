@@ -1,0 +1,54 @@
+apiVersion: core.contrail.juniper.net/v1alpha1
+kind: Project
+metadata:
+  name: multinet
+  annotations:
+    core.juniper.net/display-name: multinet
+    core.juniper.net/description:
+      This cluster object represents one instance of application or tenant.
+spec:
+  domain: default-domain
+---
+apiVersion: core.contrail.juniper.net/v1alpha1
+kind: NetworkIPAM
+metadata:
+  name: vn-green-ipam
+  namespace: multinet
+  annotations:
+    core.juniper.net/display-name: Green Network IPAM
+    core.juniper.net/description:
+      NetworkIPAM is the IP Address Management object that controls IP
+      allocation, DNS and DHCP configuration.
+spec:
+  parent:
+    apiVersion: core.contrail.juniper.net/v1alpha1
+    kind: Project
+    name: multinet
+---
+apiVersion: core.contrail.juniper.net/v1alpha1
+kind: VirtualNetwork
+metadata:
+  name: green-vn
+  namespace: multinet
+  annotations:
+    core.juniper.net/display-name: Sample Virtual Network
+    core.juniper.net/description:
+      VirtualNetwork is a collection of end points (interface or ip(s) or MAC(s))
+      that can communicate with each other by default. It is a collection of
+      subnets whose default gateways are connected by an implicit router
+spec:
+  parent:
+    apiVersion: core.contrail.juniper.net/v1alpha1
+    kind: Project
+    name: multinet
+  networkIpamReferences:
+    - apiVersion: core.contrail.juniper.net/v1alpha1
+      kind: NetworkIPAM
+      name: vn-green-ipam
+      namespace: multinet
+      attributes:
+        ipamSubnets:
+          - subnet:
+              ipPrefix: 192.168.128.0
+              ipPrefixLen: 24
+            defaultGateway: 192.168.128.1
